@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnimatedList } from 'react-animated-list';
 import Post from '../Post/Post';
@@ -17,10 +17,11 @@ const Home = () => {
   const { isLoading, error, searchTerm, selectedSubreddit } = reddit;
   const posts = useSelector(selectFilteredPosts);
   const dispatch = useDispatch();
+  const stableDispatch = useCallback(dispatch);
 
   useEffect(() => {
-    dispatch(fetchPosts(selectedSubreddit));
-  }, [selectedSubreddit]);
+    stableDispatch(fetchPosts(selectedSubreddit));
+  }, [stableDispatch]);
 
   const onToggleComments = (index) => {
     const getComments = (permalink) => {
